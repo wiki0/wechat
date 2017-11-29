@@ -4,6 +4,7 @@ import (
 	"github.com/gorilla/websocket"
 	"log"
 	"net/http"
+	"os"
 )
 
 var clients = make(map[*websocket.Conn]bool) // connected clients
@@ -25,7 +26,9 @@ type Message struct {
 
 func main() {
 	// Create a simple file server
-	fs := http.FileServer(http.Dir("../public"))
+	path,_ := os.Getwd()
+	log.Println(path)
+	fs := http.FileServer(http.Dir(path+"/public/"))
 	http.Handle("/", fs)
 
 	// Configure websocket route
@@ -83,3 +86,4 @@ func handleMessages() {
 		}
 	}
 }
+

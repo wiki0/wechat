@@ -7,6 +7,7 @@ new Vue({
         chatContent: '', // A running list of chat messages displayed on the screen
         email: null, // Email address used for grabbing an avatar
         username: null, // Our username
+        message: 'Hello Vue!',
         joined: false // True if email and username have been filled in
     },
 
@@ -58,4 +59,5 @@ new Vue({
             return 'http://www.gravatar.com/avatar/' + CryptoJS.MD5(email);
         }
     }
+
 });
