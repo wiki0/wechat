@@ -1,6 +1,6 @@
 FROM golang:latest
 
-MAINTAINER wiki0@live.cn
+MAINTAINER Razil "wiki0@live.cn"
 
 WORKDIR $GOPATH/src/wechat
 ADD . $GOPATH/src/wechat
@@ -9,4 +9,4 @@ RUN go get github.com/gorilla/websocket \
 
 EXPOSE 8080
 
-ENTRYPOINT ["./wechat"]docke
+ENTRYPOINT ["./wechat"]
