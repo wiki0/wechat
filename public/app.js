@@ -19,7 +19,7 @@ var vm = new Vue({
             console.log(name);
             if (msg.username == name){
                 self.chatContent +='<div class="media"><div class="media-left">'
-                    +'<img class="media-object" data-src="holder.js/64x64" alt="64x64" src="' + self.gravatarURL() + '" data-holder-rendered="true" style="width: 64px; height: 64px;"></div>'
+                    +'<img class="media-object" data-src="holder.js/42x42" alt="42x42" src="' + self.gravatarURL() + '" data-holder-rendered="true" style="width: 42px; height: 42px;"></div>'
                     +'<div class="media-body"><h4 class="media-heading">'
                     + msg.username
                     +'</h4>' + emojione.toImage(msg.message) + '</div>';
@@ -28,7 +28,7 @@ var vm = new Vue({
                     +'<div class="media-body"><h4 class="media-heading text-right">'
                     + msg.username
                     +'</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
-                    +'<div class="media-right"><img class="media-object" data-src="holder.js/64x64" alt="64x64" src="' + self.gravatarURL() + '" data-holder-rendered="true" style="width: 64px; height: 64px;"></div>';
+                    +'<div class="media-right"><img class="media-object" data-src="holder.js/42x42" alt="42x42" src="' + self.gravatarURL() + '" data-holder-rendered="true" style="width: 42px; height: 42px;"></div>';
             }
 
             var element = document.getElementById('chat-messages');
