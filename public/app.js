@@ -18,7 +18,7 @@ var vm = new Vue({
             var name = document.getElementById("name").value;
             if (msg.username == name){
                 self.chatContent +='<div class="media"><div class="media-left">'
-                    +'<img class="media-object" data-src="holder.js/42x42" alt="42x42" src="' + self.gravatarURL(msg.username) + '" data-holder-rendered="true" style="width: 42px; height: 42px;"></div>'
+                    +'<img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + self.gravatarURL(msg.username) + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>'
                     +'<div class="media-body"><h4 class="media-heading">'
                     + msg.username
                     +'</h4>' + emojione.toImage(msg.message) + '</div>';
@@ -27,7 +27,7 @@ var vm = new Vue({
                     +'<div class="media-body"><h4 class="media-heading text-right">'
                     + msg.username
                     +'</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
-                    +'<div class="media-right"><img class="media-object" data-src="holder.js/42x42" alt="42x42" src="' + self.gravatarURL(msg.username) + '" data-holder-rendered="true" style="width: 42px; height: 42px;"></div>';
+                    +'<div class="media-right"><img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + self.gravatarURL(msg.username) + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>';
             }
 
             var element = document.getElementById('chat-messages');
@@ -69,13 +69,13 @@ var vm = new Vue({
                 async: false,
                 type: "get",
                 success: function (data) {
-                    console.log(data.items[0].link);
                     image = data.items[0].link;
                 },
                 error: function(){
                     console.log("error")
                 }
             });
+            console.log(image);
             return image;
         }
     }
