@@ -7,7 +7,7 @@ var vm = new Vue({
         chatContent: '', // A running list of chat messages displayed on the screen
         username: '', // Our username
         message: 'Hello Vue!',
-        images: {},
+        images: {"wiki":"brown.png"},
         joined: false // True if email and username have been filled in
     },
 
@@ -17,21 +17,20 @@ var vm = new Vue({
         this.ws.addEventListener('message', function (e) {
             var msg = JSON.parse(e.data);
             var name = document.getElementById("name").value;
-
-            if (msg.username in self.images) {
+            if (msg.username in self.images || msg.username ==="wiki") {
 
                 if (msg.username === name) {
-                    self.chatContent += '<div class="media"><div class="media-left">'
-                        + '<img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + self.images[msg.username] + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>'
-                        + '<div class="media-body"><h4 class="media-heading">'
-                        + msg.username
-                        + '</h4>' + emojione.toImage(msg.message) + '</div>';
-                } else {
                     self.chatContent += '<div class="media">'
                         + '<div class="media-body"><h4 class="media-heading text-right">'
                         + msg.username
                         + '</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
                         + '<div class="media-right"><img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + self.images[msg.username] + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>';
+                } else {
+                    self.chatContent += '<div class="media"><div class="media-left">'
+                        + '<img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + self.images[msg.username] + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>'
+                        + '<div class="media-body"><h4 class="media-heading">'
+                        + msg.username
+                        + '</h4>' + emojione.toImage(msg.message) + '</div>';
                 }
 
             } else {
@@ -73,17 +72,17 @@ var vm = new Vue({
                         }
 
                         if (msg.username === name) {
-                            self.chatContent += '<div class="media"><div class="media-left">'
-                                + '<img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + image + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>'
-                                + '<div class="media-body"><h4 class="media-heading">'
-                                + msg.username
-                                + '</h4>' + emojione.toImage(msg.message) + '</div>';
-                        } else {
                             self.chatContent += '<div class="media">'
                                 + '<div class="media-body"><h4 class="media-heading text-right">'
                                 + msg.username
                                 + '</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
                                 + '<div class="media-right"><img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + image + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>';
+                        } else {
+                            self.chatContent += '<div class="media"><div class="media-left">'
+                                + '<img class="media-object" data-src="holder.js/54x54" alt="54x54" src="' + image + '" data-holder-rendered="true" style="width: 54px; height: 54px;"></div>'
+                                + '<div class="media-body"><h4 class="media-heading">'
+                                + msg.username
+                                + '</h4>' + emojione.toImage(msg.message) + '</div>';
                         }
                         self.images[msg.username] = image; // map.put(key, value);
                     },
