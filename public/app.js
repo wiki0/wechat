@@ -81,6 +81,7 @@ var vm = new Vue({
                     }
                 },
                 error: function () {
+
                     console.log("error can not find image");
                 }
             });
