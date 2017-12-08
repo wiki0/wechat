@@ -93,9 +93,12 @@ var vm = new Vue({
                     +'<div class="media-body"><h4 class="media-heading">'
                     + msg.username
                     +'</h4>' + emojione.toImage(msg.message) + '</div>';
+
             }else if( msg.username in this.images){
+
                 this.googleImage(msg,0);
             } else {
+
                 this.googleImage(msg,1);
                 this.googleImage(msg,0);
             }
