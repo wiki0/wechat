@@ -9,7 +9,6 @@ import (
 
 var clients = make(map[*websocket.Conn]bool) // connected clients
 var broadcast = make(chan Message)           // broadcast channel
-var historyArrary = [3][2]string{}           //聊天历史
 // Configure the upgrader
 var upgrader = websocket.Upgrader{
 	CheckOrigin: func(r *http.Request) bool {
@@ -56,20 +55,11 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	clients[ws] = true
 
 	//聊天历史
-	if historyArrary[0][0] == "" {
-		historyArrary[0][0] = "wiki"
-		historyArrary[0][1] = "有什么想说的,这还没有人"
-		historyArrary[1][0] = "wiki"
-		historyArrary[1][1] = "信息已加密"
-		historyArrary[2][0] = "wiki"
-		historyArrary[2][1] = "开始吧"
-	}
 	var history Message
-	for x := 0; x < 3; x++ {
-		history.Username = historyArrary[x][0]
-		history.Message = historyArrary[x][1]
+		history.Username ="wiki"
+		history.Message = "斗图开始"
 		ws.WriteJSON(history)
-	}
+
 	for {
 		var msg Message
 		// Read in a new message as JSON and map it to a Message object
@@ -88,14 +78,6 @@ func handleMessages() {
 	for {
 		// Grab the next message from the broadcast channel
 		msg := <-broadcast
-
-		for x := 0; x < 2; x++ {
-			historyArrary[x][0] = historyArrary[x+1][0]
-			historyArrary[x][1] = historyArrary[x+1][1]
-		}
-		historyArrary[2][0] = msg.Username
-		historyArrary[2][1] = msg.Message
-
 		// Send it out to every client that is currently connected
 		for client := range clients {
 			err := client.WriteJSON(msg)
