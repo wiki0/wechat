@@ -6,7 +6,7 @@ var vm = new Vue({
         newMsg: '', // Holds new messages to be sent to the server
         chatContent: '', // A running list of chat messages displayed on the screen
         username: '', // Our username
-        message: 'Hello Vue!',
+        message: 'hello world!',
         images: {"wiki": "brown.png"},
         joined: false // True if email and username have been filled in
     },
