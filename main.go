@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"strconv"
 )
 
 var clients = make(map[*websocket.Conn]bool) // connected clients
@@ -57,8 +58,11 @@ func handleConnections(w http.ResponseWriter, r *http.Request) {
 	//聊天历史
 	var history Message
 		history.Username ="wiki"
-		history.Message = "斗图开始"
-		ws.WriteJSON(history)
+		history.Message = "在线人数:"+ strconv.Itoa(len(clients))
+	ws.WriteJSON(history)
+		history.Username ="wiki"
+		history.Message = "欢迎来到我的聊天室~"
+	ws.WriteJSON(history)
 
 	for {
 		var msg Message
