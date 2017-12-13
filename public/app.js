@@ -18,7 +18,7 @@ var vm = new Vue({
         chatContent: function (val, oldVal) {
             // console.log('show: %s, old: %s', val, oldVal);
             this.$nextTick( function () {
-                var element = document.getElementById('chat-messages');
+                var element = document.getElementById('messages');
                 if (element.scrollHeight > 200)
                 element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
             })
