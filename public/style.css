@@ -8,7 +8,7 @@ main {
     flex: 1 0 auto;
 }
 
-#chat-messages {
+#messages {
     min-height: 10vh;
     height: 70vh;
     width: 100%;
