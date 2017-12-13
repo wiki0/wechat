@@ -15,10 +15,10 @@ var vm = new Vue({
     },
     watch: {
         show: function (val, oldVal) {
-          if(val){
-              var element = document.getElementById('messages');
-              element.scrollTop = element.scrollHeight;
-          }
+            if (val) {
+                var element = document.getElementById('messages');
+                element.scrollTop = element.scrollHeight;
+            }
         }
     },
     created: function () {
@@ -115,21 +115,15 @@ var vm = new Vue({
                     + msg.username
                     + '</h4>' + emojione.toImage(msg.message) + '</div>';
 
-            } else if (msg.username in this.images) {
-                if (this.flag) {
-                    this.googleImage(msg, 0);
-                } else {
-                    this.showMessage(msg);
-                }
-            } else {
+            } else if (msg.username in this.images && this.flag) {
+                this.showMessage(msg);
+            } else if (msg.username in this.images){
+                this.googleImage(msg, 0);
+            }else {
                 this.googleImage(msg, 1);
-                if (this.flag) {
-                    this.googleImage(msg, 0);
-                } else {
-                    this.showMessage(msg);
-                }
+                this.googleImage(msg, 0);
             }
-            for (var i = 60; i < 100; i+5) {
+            for (var i = 60; i < 100; i + 5) {
                 this.styleObject.width = i + "%";
             }
         },
