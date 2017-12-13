@@ -7,13 +7,20 @@ var vm = new Vue({
         chatContent: '', // A running list of chat messages displayed on the screen
         username: '', // Our username
         message: 'hello world!',
-        images: {'wiki': 'brown.ico'},
+        images: {'wiki': 'favicon.ico'},
         show: true,
         flag:true,
         styleObject: {width: '0%'},
         joined: false // True if email and username have been filled in
     },
-
+    watch: {
+        chatContent: function (val, oldVal) {
+            console.log('show: %s, old: %s', val, oldVal);
+                var element = document.getElementById('chat-messages');
+                    element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
+                console.log( element.scrollHeight);
+        }
+    },
     created: function () {
         var self = this;
         this.ws = new WebSocket('ws://' + window.location.host + '/ws');
@@ -24,11 +31,12 @@ var vm = new Vue({
     },
 
     methods: {
+
         send: function (flag) {
             this.styleObject.width = "0%";
             this.flag = flag;
             if (this.newMsg !== '') {
-                this.show = !this.show;
+                this.show = false;
                 this.ws.send(
                     JSON.stringify({
                             username: this.username,
@@ -77,7 +85,9 @@ var vm = new Vue({
                                 timeout : 200,
                                 async: false,
                                 complete: function(response){
+                                    console.log(response.status);
                                     if(response.status != 403){
+                                        console.log(image);
                                         flag = true;
                                     }
                                 }
@@ -91,7 +101,11 @@ var vm = new Vue({
                 },
                 error: function () {
                     console.log("error can not find image");
-                    this.show = !this.show;//显示输入框
+                    if (index ===0){
+                        self.flag = false;
+                        self.showMessage(msg);
+                        self.show = true;//显示输入框
+                    }
                 }
             });
         },
@@ -150,9 +164,7 @@ var vm = new Vue({
                         + '</h4>'  +  emojione.toImage(msg.message) + '</div>';
                 }
             }
-            var element = document.getElementById('chat-messages');
-            element.scrollTop = element.scrollHeight; // Auto scroll to the bottom
-            this.show = !this.show;//显示输入框
+            this.show = true;//显示输入框
         }
     }
 
