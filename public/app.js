@@ -9,7 +9,6 @@ var vm = new Vue({
         message: 'hello world!',
         images: {'wiki': 'favicon.ico'},
         show: true,
-        flag: true,
         styleObject: {width: '0%'},
         joined: false // True if email and username have been filled in
     },
@@ -31,9 +30,8 @@ var vm = new Vue({
     },
 
     methods: {
-        send: function (flag) {
+        send: function () {
             this.styleObject.width = "0%";
-            this.flag = flag;
             if (this.newMsg !== '') {
                 this.show = false;
                 this.ws.send(
@@ -53,12 +51,10 @@ var vm = new Vue({
             this.joined = true;
         },
 
-        googleImage: function (msg, index) {
+        googleImage: function (msg) {
             this.styleObject.width = "60%";
             var self = this;
             var name = msg.username;
-            if (index === 0)
-                name = msg.message;
             $.ajax({
                 url: "https://www.googleapis.com/customsearch/v1",
                 data: {
@@ -73,6 +69,7 @@ var vm = new Vue({
                 type: "get",
                 dataType: 'jsonp',
                 success: function (data) {
+                    self.styleObject.width = "80%";
                     var image = 'http://www.gravatar.com/avatar/';
                     var isGet = false;
                     for (var i = 0; i < 3; i++) {
@@ -92,72 +89,38 @@ var vm = new Vue({
                         }
                     }
                     self.images[name] = image; // map.put(key, value);
-                    if (index === 0) {
-                        self.showMessage(msg);
-                    }
+                    self.showMessage(msg);
                 },
                 error: function () {
                     console.log("error can not find image");
-                    if (index === 0) {
-                        self.flag = false;
-                        self.showMessage(msg);
-                        self.show = true;//显示输入框
-                    }
+                    self.showMessage(msg);
+                    self.show = true;//显示输入框
                 }
             });
         },
 
         showImage: function (msg) {
-            if (msg.username === "wiki") {
-                this.chatContent += '<div class="media"><div class="media-left">'
-                    + '<img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>'
-                    + '<div class="media-body"><h4 class="media-heading">'
-                    + msg.username
-                    + '</h4>' + emojione.toImage(msg.message) + '</div>';
-
-            } else if (msg.username in this.images && this.flag) {
+            if (msg.username in this.images) {
                 this.showMessage(msg);
-            } else if (msg.username in this.images){
-                this.googleImage(msg, 0);
-            }else {
-                this.googleImage(msg, 1);
-                this.googleImage(msg, 0);
-            }
-            for (var i = 60; i < 100; i + 5) {
-                this.styleObject.width = i + "%";
+            } else {
+                this.googleImage(msg);
             }
         },
 
         showMessage: function (msg) {
             var name = document.getElementById("name").value;
-            if (this.flag) {
-                if (msg.username === name) {
-                    this.chatContent += '<div class="media">'
-                        + '<div class="media-body"><h4 class="media-heading text-right">'
-                        + msg.username
-                        + '</h4><div class="text-right"><img src="' + this.images[msg.message] + '" class="img-thumbnail"></div></div>'
-                        + '<div class="media-right"><img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>';
-                } else {
-                    this.chatContent += '<div class="media"><div class="media-left">'
-                        + '<img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>'
-                        + '<div class="media-body"><h4 class="media-heading">'
-                        + msg.username
-                        + '</h4><img src="' + this.images[msg.message] + '" class="img-thumbnail"></div>';
-                }
+            if (msg.username === name) {
+                this.chatContent += '<div class="media">'
+                    + '<div class="media-body"><h4 class="media-heading text-right">'
+                    + msg.username
+                    + '</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
+                    + '<div class="media-right"><img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>';
             } else {
-                if (msg.username === name) {
-                    this.chatContent += '<div class="media">'
-                        + '<div class="media-body"><h4 class="media-heading text-right">'
-                        + msg.username
-                        + '</h4><div class="text-right">' + emojione.toImage(msg.message) + '</div></div>'
-                        + '<div class="media-right"><img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>';
-                } else {
-                    this.chatContent += '<div class="media"><div class="media-left">'
-                        + '<img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>'
-                        + '<div class="media-body"><h4 class="media-heading">'
-                        + msg.username
-                        + '</h4>' + emojione.toImage(msg.message) + '</div>';
-                }
+                this.chatContent += '<div class="media"><div class="media-left">'
+                    + '<img class="media-object" data-src="holder.js/48x48" alt="48x48" src="' + this.images[msg.username] + '" data-holder-rendered="true" style="width: 48px; height: 48px;"></div>'
+                    + '<div class="media-body"><h4 class="media-heading">'
+                    + msg.username
+                    + '</h4>' + emojione.toImage(msg.message) + '</div>';
             }
             this.show = true;//显示输入框
         }
